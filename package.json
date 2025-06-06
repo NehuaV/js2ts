@@ -26,5 +26,8 @@
     "cli"
   ],
   "author": "https://github.com/NehuaV",
-  "license": "MIT"
+  "license": "MIT",
+  "prettier": {
+    "printWidth": 144
+  }
 }
