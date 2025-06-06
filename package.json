@@ -1,0 +1,30 @@
+{
+  "name": "js2ts",
+  "module": "index.ts",
+  "version": "1.0.0",
+  "description": "Convert JavaScript files to TypeScript files",
+  "type": "module",
+  "main": "index.ts",
+  "private": false,
+  "bin": {
+    "js2ts": "./index.ts"
+  },
+  "scripts": {
+    "build": "bun build index.ts --compile --outfile ./out/js2ts",
+    "start": "bun index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "keywords": [
+    "javascript",
+    "typescript",
+    "converter",
+    "cli"
+  ],
+  "author": "https://github.com/NehuaV",
+  "license": "MIT"
+}
