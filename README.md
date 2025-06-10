@@ -53,12 +53,22 @@ js2ts /path/to/your/project [ignore-patterns...]
 - 🚫 Ignore patterns support (node_modules, dist, build, out ignored by default)
 - 🔄 **Converts and removes**: Creates `.ts`/`.tsx` files and removes original `.js`/`.jsx` files
 - 🎯 Supports both: `.js` → `.ts` and `.jsx` → `.tsx` conversions
+- 🧠 **Smart JSX detection**: Automatically detects JSX syntax in `.js` files and converts to `.tsx`
 - 📝 Simple: copies content then deletes originals
 
 ## File Conversions
 
-- `.js` files → `.ts` files
+- `.js` files → `.ts` files (or `.tsx` if JSX syntax is detected)
 - `.jsx` files → `.tsx` files
+
+The tool automatically detects JSX syntax in JavaScript files by looking for:
+
+- JSX components (`<Component>`)
+- HTML elements (`<div>`, `<span>`, etc.)
+- JSX fragments (`<>`, `</>`)
+- Self-closing tags (`<Component />`)
+
+If JSX syntax is found in a `.js` file, it will be converted to `.tsx` instead of `.ts`.
 
 ## Ignore Patterns
 
@@ -91,6 +101,7 @@ $ js2ts ./my-project
 ✅ Converted: ./my-project/utils.js -> ./my-project/utils.ts
 ✅ Converted: ./my-project/components/Button.jsx -> ./my-project/components/Button.tsx
 ✅ Converted: ./my-project/components/Header.jsx -> ./my-project/components/Header.tsx
+✅ Converted: ./my-project/components/App.js -> ./my-project/components/App.tsx
 ✅ Converted: ./my-project/lib/helper.js -> ./my-project/lib/helper.ts
 🎉 Conversion complete - all .js/.jsx files converted to .ts/.tsx and originals removed.
 ```

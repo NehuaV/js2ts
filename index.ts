@@ -1,12 +1,30 @@
 #!/usr/bin/env bun
 import { stat, unlink } from "node:fs/promises";
 
-async function convertJSToTS(jsFile: string) {
-  const isJSX = jsFile.endsWith(".jsx");
-  const tsFile = isJSX ? jsFile.replace(/\.jsx$/, ".tsx") : jsFile.replace(/\.js$/, ".ts");
+function containsJSX(content: string): boolean {
+  // Look for JSX patterns in the content
+  const jsxPatterns = [
+    /<[A-Z][a-zA-Z0-9]*[^>]*>/, // JSX components: <Component>
+    /<[a-z]+[^>]*>/, // HTML elements: <div>
+    /<>/, // JSX fragments: <>
+    /<\/>/, // JSX fragment closing: </>
+    /<[A-Za-z][a-zA-Z0-9]*[^>]*\/>/, // Self-closing tags: <Component />
+  ];
 
+  return jsxPatterns.some((pattern) => pattern.test(content));
+}
+
+async function convertJSToTS(jsFile: string) {
   try {
     const content = await Bun.file(jsFile).text();
+
+    // Determine target extension based on file extension and content
+    const originallyJSX = jsFile.endsWith(".jsx");
+    const hasJSXContent = containsJSX(content);
+
+    const shouldUseTSX = originallyJSX || hasJSXContent;
+    const tsFile = shouldUseTSX ? jsFile.replace(/\.jsx?$/, ".tsx") : jsFile.replace(/\.jsx?$/, ".ts");
+
     await Bun.write(tsFile, content);
     await unlink(jsFile);
     console.log(`✅ Converted: ${jsFile} -> ${tsFile}`);
